@@ -1,0 +1,43 @@
+stages:
+  - lint
+  - test
+
+lint:
+  stage: lint
+  when: always
+  only:
+    - branches
+  tags:
+    - docker-runner
+  image: base-images.prod.lan/golangci/golinter-go1.18.7-golinter-1.50.1:v2.0
+  script:
+    - make lint
+
+test:
+  stage: test
+  when: always
+  only:
+    - branches
+  tags:
+    - docker-runner
+  image: base-images.prod.lan/golangci/gobuilder-go1.18.7:v2.0
+  script:
+    - make test
+
+release:
+  stage: release
+  when: manual
+  only:
+    - master
+  tags:
+    - shell-runner
+  variables:
+    TAG_NAME_FORMAT: "%Y-%m-%dT%H-%M-%SZ"
+  script:
+    - |
+      export TAG_NAME=$(date -u +$TAG_NAME_FORMAT)
+      echo Creating release tagged as release/${TAG_NAME};
+      curl -H 'Content-Type: application/json' -H "Private-Token: ${GITLAB_API_ACCESS_TOKEN}" \
+        -d '{"tag_name":"release-'${TAG_NAME}'","ref":"'${CI_COMMIT_SHA}'","description":"Release"}' \
+        ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/releases
+  dependencies: [ ]

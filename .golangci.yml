@@ -1,0 +1,72 @@
+linters:
+  disable-all: true
+  enable:
+    - gofmt
+    - varcheck
+    - typecheck
+    - goconst
+    - gocyclo
+    - errcheck
+    - bodyclose
+    - deadcode
+    - misspell
+    - noctx
+    - whitespace
+    - govet
+    - unused
+    - gocritic
+    - gosimple
+    - ineffassign
+    - staticcheck
+
+run:
+  concurrency: 4
+  timeout: 10m
+  issues-exit-code: 1
+  tests: true
+  skip-dirs-use-default: true
+
+output:
+  format: colored-line-number
+  print-linter-name: true
+
+linters-settings:
+  misspell:
+    locale: US
+  gofmt:
+    simplify: false
+  govet:
+    check-shadowing: true
+  nolintlint:
+    allow-leading-space: true
+    allow-unused: false
+    require-explanation: false
+    require-specific: false
+  service:
+    golangci-lint-version: 1.48.x
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - style
+      - performance
+      - experimental
+      - opinionated
+    settings:
+      captLocal:
+        paramsOnly: false
+      elseif:
+        skipBalanced: false
+      rangeExprCopy:
+        skipTestFuncs: false
+      truncateCmp:
+        skipArchDependent: false
+      underef:
+        skipRecvDeref: false
+      unnamedResult:
+        checkExported: true
+issues:
+  exclude-use-default: true
+  exclude-case-sensitive: false
+  max-issues-per-linter: 50
+  max-same-issues: 3
+  new: false
