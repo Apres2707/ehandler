@@ -38,6 +38,7 @@ release:
     - |
       export TAG_NAME=$(date -u +$TAG_NAME_FORMAT)
       echo Creating release tagged as release/${TAG_NAME};
+      echo ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/releases;
       curl -H 'Content-Type: application/json' -H "Private-Token: ${GITLAB_API_ACCESS_TOKEN}" \
         -d '{"tag_name":"release-'${TAG_NAME}'","ref":"'${CI_COMMIT_SHA}'","description":"Release"}' \
         ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/releases
