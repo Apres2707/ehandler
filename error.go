@@ -1,4 +1,4 @@
-package ehandler
+package error_by_level
 
 const (
 	systemError  = "systemError"
